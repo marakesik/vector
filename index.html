@@ -2,6 +2,7 @@
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>VECTOR — криптотерминал</title><meta name="description" content="Котировки и история торгов Kraken в USD">
 <style>
 :root{color-scheme:dark;--bg:#0c1014;--panel:#141a20;--line:#29343c;--ink:#e9f2f6;--muted:#a0afb8;--lime:#c8fa76;--red:#ff9199}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,sans-serif}header,footer{border-bottom:1px solid var(--line);background:#11171c}header>div,main,footer>div{width:min(1180px,calc(100% - 36px));margin:auto}header>div,footer>div,.bar,.chart-head,.actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}header>div{min-height:69px;padding:12px 0}a{color:inherit;text-decoration:none}.brand{display:flex;gap:10px;align-items:center;font:800 21px system-ui;letter-spacing:.13em}.logo{color:#10170a;background:var(--lime);width:33px;height:33px;display:grid;place-items:center;border-radius:7px;letter-spacing:0}nav,.group{display:flex;gap:6px;flex-wrap:wrap}nav a,button,.button,select,input{font:inherit;color:inherit;border:1px solid var(--line);background:#182027;border-radius:7px;padding:8px 12px}nav a{border-color:transparent;background:none}nav a[aria-current=page],button[aria-pressed=true],.primary{background:var(--lime);color:#131d0a;border-color:var(--lime);font-weight:700}button,.button{cursor:pointer}a:hover,button:hover{border-color:var(--lime);color:var(--lime)}nav a[aria-current=page]:hover,.primary:hover,button[aria-pressed=true]:hover{color:#131d0a}button:disabled{opacity:.5;cursor:default}:focus-visible{outline:2px solid var(--lime);outline-offset:3px}.mono,.tag,.price,th{font-family:ui-monospace,Consolas,monospace}.tag{color:var(--lime);letter-spacing:.11em;font-size:12px}.status{padding:5px 10px;border:1px solid #47583e;border-radius:99px;color:var(--lime);white-space:nowrap;font-size:12px}.status:before{content:'● ';font-size:9px}main{padding:32px 0 52px;min-height:75vh}.intro{margin-bottom:22px}.intro h1{font-size:clamp(2rem,5vw,4rem);letter-spacing:-.055em;line-height:1.03;margin:7px 0 10px}.muted,.intro p,small{color:var(--muted)}.intro p{margin:0}.metrics,.layout{display:grid;gap:14px;margin-bottom:14px}.metrics{grid-template-columns:repeat(3,1fr)}.layout{grid-template-columns:2fr 1fr}.panel,.metric{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:18px;min-width:0}.metric strong{display:block;font:700 clamp(17px,3vw,25px) ui-monospace,Consolas,monospace;margin-top:6px}.panel h2{margin:0 0 10px;font-size:19px}.price{font-size:clamp(22px,4vw,37px);letter-spacing:-.05em;font-weight:700}.up{color:var(--lime)}.down{color:var(--red)}.chart{width:100%;display:block;height:auto;margin-top:10px}.grid{stroke:#334047;stroke-dasharray:4 5}.curve{fill:none;stroke:var(--lime);stroke-width:2.3;vector-effect:non-scaling-stroke}.axis{font:11px ui-monospace,monospace;fill:var(--muted)}.quote{padding:10px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px}.quote:hover{color:var(--lime)}.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:540px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);white-space:nowrap}th{font-size:12px;color:var(--muted)}td a{font-weight:700}td a:hover{text-decoration:underline}.star{min-width:42px;padding:5px 9px}.asset-title{display:flex;align-items:center;gap:8px}.badge{display:inline-grid;place-items:center;width:30px;height:30px;background:#222d35;border-radius:7px;color:var(--lime);font-weight:800}.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.fields label{display:grid;gap:5px}.fields input,.fields select{width:100%}.empty{padding:28px 0;color:var(--muted)}footer{border-top:1px solid var(--line);border-bottom:0}footer>div{padding:16px 0;color:var(--muted);font-size:13px}.view{animation:enter .2s ease-out}@keyframes enter{from{opacity:.55;transform:translateY(4px)}}@media(prefers-reduced-motion:reduce){.view{animation:none}}@media(max-width:760px){.layout{grid-template-columns:1fr}.panel,.metric{padding:13px}nav{order:3;width:100%}nav a{padding:6px 8px}.metrics{gap:7px}}@media(max-width:380px){.metrics{grid-template-columns:1fr}}
+.candle-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:5px 12px;margin-top:16px;color:var(--muted);font-size:12px}.candle-details{color:var(--ink);font:12px/1.55 ui-monospace,monospace;min-height:3.1em;margin-top:6px}.candle-note{color:var(--muted);font-size:12px;margin:0}.chart[data-candles]{cursor:crosshair}
 </style></head><body>
 <header><div><a class="brand" href="#overview"><span class="logo">V</span>VECTOR</a><nav aria-label="Разделы"><a href="#overview">Обзор</a><a href="#market">Рынок</a><a href="#watch">Избранное <span id="count"></span></a><a href="#converter">Конвертер</a></nav><span class="status" id="feed" role="status">Подключение к Kraken…</span></div></header>
 <main id="main"></main><footer><div><span>VECTOR / 01</span><span><span id="updated">Источник: Kraken Spot</span></span><a href="#about">О данных ↗</a></div></footer>
@@ -26,7 +27,7 @@ const main=document.querySelector("#main");
 const storageKey="vector-demo-watch-v1";
 let watch=new Set();
 try{const saved=JSON.parse(localStorage.getItem(storageKey)||"[]");if(Array.isArray(saved))watch=new Set(saved.filter(value=>coins.some(coin=>coin.symbol===value)))}catch{}
-let range="7Д",sort="volume",filter="all",query="",paused=false;
+let range="1ч",sort="volume",filter="all",query="",paused=false;
 const money=new Intl.NumberFormat("ru-RU",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:4});
 const format=new Intl.NumberFormat("ru-RU",{maximumFractionDigits:8});
 const price=coin=>coin?.price>0?money.format(coin.price):"—";
@@ -36,17 +37,63 @@ function intro(code,title,description){return '<div class="intro"><div class="ta
 function star(coin){const active=watch.has(coin.symbol);return '<button class="star" type="button" data-star="'+coin.symbol+'" aria-label="Избранное '+coin.symbol+'" aria-pressed="'+active+'">'+(active?"★":"☆")+'</button>'}
 function updateStars(){document.querySelector("#count").textContent=watch.size?"· "+watch.size:"";for(const el of main.querySelectorAll("[data-star]")){const active=watch.has(el.dataset.star);el.textContent=active?"★":"☆";el.setAttribute("aria-pressed",active)}}
 function table(list){if(!list.length)return '<p class="empty">В этом списке пока нет активов.</p>';return '<div class="wrap"><table><thead><tr><th>Актив</th><th>Цена</th><th>24 ч</th><th>Объём</th><th>Список</th></tr></thead><tbody>'+list.map(coin=>'<tr><td><a class="asset-title" href="#asset/'+coin.symbol+'"><span class="badge">'+coin.icon+'</span>'+coin.symbol+' <small>'+coin.name+'</small></a></td><td class="mono" data-price="'+coin.symbol+'">'+price(coin)+'</td><td data-change="'+coin.symbol+'">'+trend(coin)+'</td><td class="mono" data-volume="'+coin.symbol+'">'+volume(coin)+'</td><td>'+star(coin)+'</td></tr>').join("")+'</tbody></table></div>'}
-const periods={"24Ч":[5,1],"7Д":[60,7],"30Д":[240,30],"90Д":[1440,90]};
+const periods={"1м":1,"5м":5,"15м":15,"1ч":60,"4ч":240,"1д":1440};
 const history=new Map();
+const candleCount=96;
+const chartPrice=new Intl.NumberFormat("ru-RU",{maximumSignificantDigits:8});
+const candleTime=new Intl.DateTimeFormat("ru-RU",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+function candleDetails(row,coin){
+ const [time,open,high,low,close,amount]=row;
+ return candleTime.format(time*1000)+" · Откр. "+chartPrice.format(open)+" · Макс. "+chartPrice.format(high)+" · Мин. "+chartPrice.format(low)+" · Закр. "+chartPrice.format(close)+" USD · Объём "+format.format(amount)+" "+coin.symbol;
+}
 function graph(coin){
  const entry=history.get(coin.symbol+range);
- if(!entry?.rows)return '<p class="empty">'+(entry?.error?'История Kraken недоступна. <button data-retry>Повторить</button>':'Загружаем историю Kraken…')+'</p>';
- const rows=entry.rows, lo=Math.min(...rows.map(row=>row[1])), hi=Math.max(...rows.map(row=>row[1]));
- const points=rows.map(([time,close],i)=>[55+i*505/(rows.length-1),180-(close-lo)/(hi-lo||1)*145]);
- const line=points.map(point=>point.join(",")).join(" ");
- const date=new Intl.DateTimeFormat("ru-RU",range==="24Ч"?{hour:"2-digit",minute:"2-digit"}:{day:"numeric",month:"short"});
- return '<svg class="chart" viewBox="0 0 590 215" role="img" aria-label="История '+coin.symbol+' за '+range+'"><defs><linearGradient id="shade" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#c8fa76" stop-opacity=".23"/><stop offset="1" stop-color="#c8fa76" stop-opacity="0"/></linearGradient></defs>'+[35,83,131,180].map((y,i)=>'<path class="grid" d="M55 '+y+'H560"/><text class="axis" x="52" y="'+(y+4)+'" text-anchor="end">'+format.format(Number((hi-(hi-lo)*i/3).toPrecision(4)))+'</text>').join("")+'<text class="axis" x="55" y="205">'+date.format(rows[0][0]*1000)+'</text><text class="axis" x="560" y="205" text-anchor="end">'+date.format(rows.at(-1)[0]*1000)+'</text><polygon fill="url(#shade)" points="55,180 '+line+' 560,180"/><polyline class="curve" points="'+line+'"/></svg>';
+ if(!entry?.rows)return '<p class="empty">'+(entry?.error?'История Kraken недоступна. <button data-retry>Повторить</button>':'Загружаем свечи Kraken…')+'</p>';
+ const rows=entry.rows;
+ const low=Math.min(...rows.map(row=>row[3]));
+ const high=Math.max(...rows.map(row=>row[2]));
+ const padding=(high-low||high*.01)*.07;
+ const bottom=low-padding, top=high+padding;
+ const peak=Math.max(...rows.map(row=>row[5]),1e-12);
+ const priceY=value=>20+(top-value)/(top-bottom)*200;
+ const step=648/rows.length;
+ const width=Math.max(1,step*.68);
+ const marks=rows.map((row,index)=>{
+   const [,open,high,low,close,amount]=row;
+   const x=22+(index+.5)*step;
+   const color=close>=open?"#c8fa76":"#ff9199";
+   const body=Math.min(priceY(open),priceY(close));
+   const height=Math.max(1,Math.abs(priceY(open)-priceY(close)));
+   const bar=amount/peak*58;
+   return '<g fill="'+color+'"><line x1="'+x+'" x2="'+x+'" y1="'+priceY(high)+'" y2="'+priceY(low)+'" stroke="'+color+'"/><rect x="'+(x-width/2)+'" y="'+body+'" width="'+width+'" height="'+height+'"/><rect x="'+(x-width/2)+'" y="'+(302-bar)+'" width="'+width+'" height="'+bar+'" opacity=".62"/></g>';
+ }).join("");
+ const grid=[0,1,2,3,4].map(index=>{
+   const y=20+index*50;
+   return '<path class="grid" d="M22 '+y+'H670"/><text class="axis" x="678" y="'+(y+4)+'">'+chartPrice.format(top-(top-bottom)*index/4)+'</text>';
+ }).join("");
+ const timeline=[0,.5,1].map((position,index)=>{
+   const row=rows[Math.round(position*(rows.length-1))];
+   return '<text class="axis" x="'+(22+position*648)+'" y="324" text-anchor="'+["start","middle","end"][index]+'">'+candleTime.format(row[0]*1000)+'</text>';
+ }).join("");
+ return '<div class="candle-meta"><span class="tag">OHLC · USD</span><span>Объём в '+coin.symbol+' · последние '+rows.length+' свечей</span></div><div id="candle-details" class="candle-details">'+candleDetails(rows.at(-1),coin)+'</div><svg class="chart" data-candles viewBox="0 0 770 336" role="img" aria-label="Свечной график '+coin.symbol+' за интервалы '+range+' с объёмом торгов">'+grid+'<path class="grid" d="M22 302H670"/><text class="axis" x="22" y="241">Объём · '+coin.symbol+'</text>'+marks+timeline+'<line data-cross x1="0" x2="0" y1="20" y2="302" stroke="#a0afb8" stroke-dasharray="4 4" visibility="hidden"/></svg><p class="candle-note">Последняя свеча может быть незакрытой. Наведите курсор или коснитесь графика, чтобы посмотреть цены и объём свечи.</p>';
 }
+function inspectCandle(event){
+ const svg=event.target.closest("[data-candles]");
+ if(!svg)return;
+ const coin=coins.find(item=>item.symbol===main.querySelector("#plot").dataset.coin);
+ const rows=history.get(coin.symbol+range)?.rows;
+ if(!rows)return;
+ const point=new DOMPoint(event.clientX,event.clientY).matrixTransform(svg.getScreenCTM().inverse());
+ const index=Math.min(rows.length-1,Math.max(0,Math.floor((point.x-22)/648*rows.length)));
+ const x=22+(index+.5)*648/rows.length;
+ const cross=svg.querySelector("[data-cross]");
+ cross.setAttribute("x1",x);
+ cross.setAttribute("x2",x);
+ cross.setAttribute("visibility","visible");
+ main.querySelector("#candle-details").textContent=candleDetails(rows[index],coin);
+}
+main.addEventListener("pointermove",inspectCandle);
+main.addEventListener("pointerdown",inspectCandle);
 async function loadHistory(){
  const plot=main.querySelector("#plot");
  if(!plot)return;
@@ -54,8 +101,8 @@ async function loadHistory(){
  const selected=range,key=coin.symbol+selected;
  const existing=history.get(key);
  if(existing?.pending||existing?.rows&&Date.now()-existing.at<60000)return;
- const [interval,days]=periods[selected];
- const since=Math.floor(Date.now()/1000-days*86400);
+ const interval=periods[selected];
+ const since=Math.floor(Date.now()/1000)-interval*60*candleCount;
  history.set(key,{...existing,pending:true,error:false});
  plot.innerHTML=graph(coin);
  try{
@@ -65,14 +112,14 @@ async function loadHistory(){
    const {error,result}=await response.json();
    if(error.length)throw new Error(error.join(", "));
    const candles=Object.values(result).find(Array.isArray)||[];
-   const rows=candles.map(row=>[Number(row[0]),Number(row[4])]).filter(([time,close])=>time>=since&&close>0&&Number.isFinite(close)).sort((a,b)=>a[0]-b[0]);
+   const rows=candles.map(([time,open,high,low,close,,volume])=>[time,open,high,low,close,volume].map(Number)).filter(row=>row.every(Number.isFinite)&&row[3]>0&&row[2]>=row[3]&&row[5]>=0).sort((a,b)=>a[0]-b[0]).slice(-candleCount);
    if(rows.length<2)throw new Error("Missing candles");
    history.set(key,{rows,at:Date.now()});
- }catch{history.set(key,{error:true})}
+ }catch{history.set(key,{...existing,pending:false,error:true})}
  const active=main.querySelector("#plot");
  if(active?.dataset.coin===coin.symbol&&range===selected)active.innerHTML=graph(coin);
 }
-function chart(coin){return '<section class="panel"><div class="chart-head"><div><div class="tag">'+coin.symbol+' / USD</div><div class="price" data-price="'+coin.symbol+'">'+price(coin)+'</div><span data-change="'+coin.symbol+'">'+trend(coin)+'</span></div><div class="group" aria-label="Период графика">'+["24Ч","7Д","30Д","90Д"].map(r=>'<button data-range="'+r+'" aria-pressed="'+(range===r)+'">'+r+'</button>').join("")+'</div></div><div id="plot" data-coin="'+coin.symbol+'">'+graph(coin)+'</div></section>'}
+function chart(coin){return '<section class="panel"><div class="chart-head"><div><div class="tag">'+coin.symbol+' / USD</div><div class="price" data-price="'+coin.symbol+'">'+price(coin)+'</div><span data-change="'+coin.symbol+'">'+trend(coin)+'</span></div><div class="group" aria-label="Таймфрейм свечей">'+Object.keys(periods).map(r=>'<button data-range="'+r+'" aria-pressed="'+(range===r)+'">'+r+'</button>').join("")+'</div></div><div id="plot" data-coin="'+coin.symbol+'">'+graph(coin)+'</div></section>'}
 function side(){return '<section class="panel"><h2>Активы</h2>'+["BTC","ETH","BNB","SOL","ADA"].map(symbol=>coins.find(coin=>coin.symbol===symbol)).map(coin=>'<a class="quote" href="#asset/'+coin.symbol+'"><span>'+coin.symbol+' <small>'+coin.name+'</small></span><span data-change="'+coin.symbol+'">'+trend(coin)+'</span></a>').join("")+'<a class="button" href="#market">Весь рынок →</a></section>'}
 function overview(){return intro("01 / ОБЗОР","Рынок в движении","Котировки USD и история торгов на спотовом рынке Kraken.")+'<div class="metrics"><div class="metric"><small>Активы на экране</small><strong>'+coins.length+'</strong></div><div class="metric"><small>Объём за 24 ч</small><strong id="market-volume">—</strong></div><div class="metric"><small>Растут / падают</small><strong id="market-trend">—</strong></div></div><div class="layout">'+chart(coins[0])+side()+'</div><div class="actions"><button id="pause" aria-pressed="'+paused+'">'+(paused?"Возобновить котировки":"Пауза котировок")+'</button><a class="button" href="#converter">Рассчитать сумму →</a></div>'}
 function marketList(){return coins.filter(c=>(c.symbol+" "+c.name).toLowerCase().includes(query.trim().toLowerCase())&&(filter==="all"||(filter==="up"?c.change>0:c.change<0))).sort((a,b)=>(b[sort]??-Infinity)-(a[sort]??-Infinity))}
@@ -161,4 +208,5 @@ function connect(){
 }
 route();
 connect();
+setInterval(()=>{if(!document.hidden&&!paused)loadHistory()},60000);
 </script></body></html>
