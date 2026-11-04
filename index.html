@@ -3,8 +3,9 @@
 <style>
 :root{color-scheme:dark;--bg:#0c1014;--panel:#141a20;--line:#29343c;--ink:#e9f2f6;--muted:#a0afb8;--lime:#c8fa76;--red:#ff9199}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,sans-serif}header,footer{border-bottom:1px solid var(--line);background:#11171c}header>div,main,footer>div{width:min(1180px,calc(100% - 36px));margin:auto}header>div,footer>div,.bar,.chart-head,.actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}header>div{min-height:69px;padding:12px 0}a{color:inherit;text-decoration:none}.brand{display:flex;gap:10px;align-items:center;font:800 21px system-ui;letter-spacing:.13em}.logo{color:#10170a;background:var(--lime);width:33px;height:33px;display:grid;place-items:center;border-radius:7px;letter-spacing:0}nav,.group{display:flex;gap:6px;flex-wrap:wrap}nav a,button,.button,select,input{font:inherit;color:inherit;border:1px solid var(--line);background:#182027;border-radius:7px;padding:8px 12px}nav a{border-color:transparent;background:none}nav a[aria-current=page],button[aria-pressed=true],.primary{background:var(--lime);color:#131d0a;border-color:var(--lime);font-weight:700}button,.button{cursor:pointer}a:hover,button:hover{border-color:var(--lime);color:var(--lime)}nav a[aria-current=page]:hover,.primary:hover,button[aria-pressed=true]:hover{color:#131d0a}button:disabled{opacity:.5;cursor:default}:focus-visible{outline:2px solid var(--lime);outline-offset:3px}.mono,.tag,.price,th{font-family:ui-monospace,Consolas,monospace}.tag{color:var(--lime);letter-spacing:.11em;font-size:12px}.status{padding:5px 10px;border:1px solid #47583e;border-radius:99px;color:var(--lime);white-space:nowrap;font-size:12px}.status:before{content:'● ';font-size:9px}main{padding:32px 0 52px;min-height:75vh}.intro{margin-bottom:22px}.intro h1{font-size:clamp(2rem,5vw,4rem);letter-spacing:-.055em;line-height:1.03;margin:7px 0 10px}.muted,.intro p,small{color:var(--muted)}.intro p{margin:0}.metrics,.layout{display:grid;gap:14px;margin-bottom:14px}.metrics{grid-template-columns:repeat(3,1fr)}.layout{grid-template-columns:2fr 1fr}.panel,.metric{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:18px;min-width:0}.metric strong{display:block;font:700 clamp(17px,3vw,25px) ui-monospace,Consolas,monospace;margin-top:6px}.panel h2{margin:0 0 10px;font-size:19px}.price{font-size:clamp(22px,4vw,37px);letter-spacing:-.05em;font-weight:700}.up{color:var(--lime)}.down{color:var(--red)}.chart{width:100%;display:block;height:auto;margin-top:10px}.grid{stroke:#334047;stroke-dasharray:4 5}.curve{fill:none;stroke:var(--lime);stroke-width:2.3;vector-effect:non-scaling-stroke}.axis{font:11px ui-monospace,monospace;fill:var(--muted)}.quote{padding:10px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px}.quote:hover{color:var(--lime)}.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:540px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);white-space:nowrap}th{font-size:12px;color:var(--muted)}td a{font-weight:700}td a:hover{text-decoration:underline}.star{min-width:42px;padding:5px 9px}.asset-title{display:flex;align-items:center;gap:8px}.badge{display:inline-grid;place-items:center;width:30px;height:30px;background:#222d35;border-radius:7px;color:var(--lime);font-weight:800}.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.fields label{display:grid;gap:5px}.fields input,.fields select{width:100%}.empty{padding:28px 0;color:var(--muted)}footer{border-top:1px solid var(--line);border-bottom:0}footer>div{padding:16px 0;color:var(--muted);font-size:13px}.view{animation:enter .2s ease-out}@keyframes enter{from{opacity:.55;transform:translateY(4px)}}@media(prefers-reduced-motion:reduce){.view{animation:none}}@media(max-width:760px){.layout{grid-template-columns:1fr}.panel,.metric{padding:13px}nav{order:3;width:100%}nav a{padding:6px 8px}.metrics{gap:7px}}@media(max-width:380px){.metrics{grid-template-columns:1fr}}
 .candle-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:5px 12px;margin-top:16px;color:var(--muted);font-size:12px}.candle-details{color:var(--ink);font:12px/1.55 ui-monospace,monospace;min-height:3.1em;margin-top:6px}.candle-note{color:var(--muted);font-size:12px;margin:0}.chart[data-candles]{cursor:crosshair}
+#scan-rise,#replay-threshold{width:7rem}#scan-detail{margin-top:16px;scroll-margin:16px}#scan-detail .metrics{grid-template-columns:repeat(auto-fit,minmax(195px,1fr))}#scan-detail .metric strong{font-size:clamp(14px,2vw,19px)}#scan-more{margin-top:12px}.bar label{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 </style></head><body>
-<header><div><a class="brand" href="#overview"><span class="logo">V</span>VECTOR</a><nav aria-label="Разделы"><a href="#overview">Обзор</a><a href="#market">Рынок</a><a href="#watch">Избранное <span id="count"></span></a><a href="#converter">Конвертер</a></nav><span class="status" id="feed" role="status">Подключение к Kraken…</span></div></header>
+<header><div><a class="brand" href="#overview"><span class="logo">V</span>VECTOR</a><nav aria-label="Разделы"><a href="#overview">Обзор</a><a href="#market">Рынок</a><a href="#scanner">Шорт-сканер</a><a href="#watch">Избранное <span id="count"></span></a><a href="#converter">Конвертер</a></nav><span class="status" id="feed" role="status">Подключение к Kraken…</span></div></header>
 <main id="main"></main><footer><div><span>VECTOR / 01</span><span><span id="updated">Источник: Kraken Spot</span></span><a href="#about">О данных ↗</a></div></footer>
 <script>
 const coins=[
@@ -121,7 +122,7 @@ async function loadHistory(){
 }
 function chart(coin){return '<section class="panel"><div class="chart-head"><div><div class="tag">'+coin.symbol+' / USD</div><div class="price" data-price="'+coin.symbol+'">'+price(coin)+'</div><span data-change="'+coin.symbol+'">'+trend(coin)+'</span></div><div class="group" aria-label="Таймфрейм свечей">'+Object.keys(periods).map(r=>'<button data-range="'+r+'" aria-pressed="'+(range===r)+'">'+r+'</button>').join("")+'</div></div><div id="plot" data-coin="'+coin.symbol+'">'+graph(coin)+'</div></section>'}
 function side(){return '<section class="panel"><h2>Активы</h2>'+["BTC","ETH","BNB","SOL","ADA"].map(symbol=>coins.find(coin=>coin.symbol===symbol)).map(coin=>'<a class="quote" href="#asset/'+coin.symbol+'"><span>'+coin.symbol+' <small>'+coin.name+'</small></span><span data-change="'+coin.symbol+'">'+trend(coin)+'</span></a>').join("")+'<a class="button" href="#market">Весь рынок →</a></section>'}
-function overview(){return intro("01 / ОБЗОР","Рынок в движении","Котировки USD и история торгов на спотовом рынке Kraken.")+'<div class="metrics"><div class="metric"><small>Активы на экране</small><strong>'+coins.length+'</strong></div><div class="metric"><small>Объём за 24 ч</small><strong id="market-volume">—</strong></div><div class="metric"><small>Растут / падают</small><strong id="market-trend">—</strong></div></div><div class="layout">'+chart(coins[0])+side()+'</div><div class="actions"><button id="pause" aria-pressed="'+paused+'">'+(paused?"Возобновить котировки":"Пауза котировок")+'</button><a class="button" href="#converter">Рассчитать сумму →</a></div>'}
+function overview(){return intro("01 / ОБЗОР","Рынок в движении","Котировки USD и история торгов на спотовом рынке Kraken.")+'<div class="metrics"><div class="metric"><small>Активы на экране</small><strong>'+coins.length+'</strong></div><div class="metric"><small>Объём за 24 ч</small><strong id="market-volume">—</strong></div><div class="metric"><small>Растут / падают</small><strong id="market-trend">—</strong></div></div><div class="layout">'+chart(coins[0])+side()+'</div><div class="actions"><button id="pause" aria-pressed="'+paused+'">'+(paused?"Возобновить котировки":"Пауза котировок")+'</button><a class="button" href="#scanner">Шорт-сканер →</a><a class="button" href="#converter">Рассчитать сумму →</a></div>'}
 function marketList(){return coins.filter(c=>(c.symbol+" "+c.name).toLowerCase().includes(query.trim().toLowerCase())&&(filter==="all"||(filter==="up"?c.change>0:c.change<0))).sort((a,b)=>(b[sort]??-Infinity)-(a[sort]??-Infinity))}
 function market(){return intro("02 / РЫНОК","Список активов","Найдите монету, отсортируйте список или откройте её график.")+'<section class="panel"><div class="bar"><input id="search" type="search" placeholder="BTC или Bitcoin" aria-label="Поиск актива"><div class="group" aria-label="Фильтр">'+[["all","Все"],["up","Растут"],["down","Падают"]].map(([key,label])=>'<button data-filter="'+key+'" aria-pressed="'+(key===filter)+'">'+label+'</button>').join("")+'</div><label>Сортировка <select id="sort"><option value="volume">Объём</option><option value="price">Цена</option><option value="change">Изменение</option></select></label></div><div id="results">'+table(marketList())+'</div></section>'}
 function favorites(){return intro("03 / ИЗБРАННОЕ","Список наблюдения","Звёздочка добавляет актив в список. Список сохраняется в этом браузере.")+'<section class="panel">'+table(coins.filter(c=>watch.has(c.symbol)))+'<p><a class="button" href="#market">Добавить активы →</a></p></section>'}
@@ -132,10 +133,11 @@ function calculate(){const amount=main.querySelector("#amount");if(!amount)retur
 function route(){
  const [page,param]=location.hash.slice(1).split("/");const coin=coins.find(c=>c.symbol===param);
  for(const link of document.querySelectorAll("nav a")){if(link.hash==="#"+(page==="asset"?"market":page||"overview"))link.setAttribute("aria-current","page");else link.removeAttribute("aria-current")}
- const views={overview,market,watch:favorites,converter,about:()=>intro("СПРАВКА / 05","О данных","Источник — Kraken Spot. Цена — последняя сделка в паре с USD. Суточный оборот в долларах рассчитан по объёму и средневзвешенной цене Kraken. При потере связи остаются последние полученные значения.")};
+ const views={overview,market,watch:favorites,converter,scanner,about:()=>intro("СПРАВКА / 05","О данных","Источник — Kraken Spot. Цена — последняя сделка в паре с USD. Суточный оборот в долларах рассчитан по объёму и средневзвешенной цене Kraken. При потере связи остаются последние полученные значения.")};
  const view=page==="asset"&&coin?asset(coin):Object.hasOwn(views,page)?views[page]():overview();
  main.innerHTML='<div class="view">'+view+'</div>';
  if(page==="market"){main.querySelector("#search").value=query;main.querySelector("#sort").value=sort}
+ if(page==="scanner"){showScanner();loadScanner()}
  if(page==="converter"){main.querySelector("#from").value=coin?.symbol||"BTC";main.querySelector("#to").value="USD";calculate()}
  updateStars();
  drawQuotes();
@@ -154,6 +156,155 @@ main.addEventListener("click",event=>{
 main.addEventListener("input",event=>{if(event.target.id==="search"){query=event.target.value;refreshMarket()}if(event.target.id==="amount")calculate()});
 main.addEventListener("change",event=>{if(event.target.id==="sort"){sort=event.target.value;refreshMarket()}if(["from","to"].includes(event.target.id))calculate()});
 window.addEventListener("hashchange",()=>{route();window.scrollTo(0,0)});
+
+const scanState={markets:[],caps:new Map(),loading:false,updated:0,error:"",capError:false,selected:"",details:null};
+const hour=3600000;
+const percent=value=>Number.isFinite(value)?(value>0?"+":"")+format.format(Number(value.toFixed(4)))+" %":"—";
+const safe=text=>String(text).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+const number=value=>value==null||value===""?NaN:Number(value);
+const compact=new Intl.NumberFormat("ru-RU",{notation:"compact",maximumFractionDigits:2});
+const tickerPrice=new Intl.NumberFormat("ru-RU",{maximumSignificantDigits:7});
+const usd=value=>Number.isFinite(value)?"$"+compact.format(value):"—";
+const priceText=value=>Number.isFinite(value)?tickerPrice.format(value)+" USDT":"—";
+async function publicJson(url){
+ const response=await fetch(url,{signal:AbortSignal.timeout(12000),cache:"no-store"});
+ if(!response.ok)throw Error("HTTP "+response.status);
+ return response.json();
+}
+async function bitget(path,params){
+ const {code,data}=await publicJson("https://api.bitget.com"+path+"?"+new URLSearchParams(params));
+ if(code!=="00000"||!Array.isArray(data))throw Error("Bitget");
+ return data;
+}
+const futures={productType:"USDT-FUTURES"};
+function scanner(){
+ return intro("05 / ДЕРИВАТИВЫ","Шорт-сканер","Ищите резкий рост и проверяйте контекст перед разбором сделки.")+
+ '<section class="panel"><div class="bar"><input id="scan-search" type="search" aria-label="Поиск контракта" placeholder="Тикер, например BNB"><label>Рост за 24 ч от, % <input id="scan-rise" type="number" min="-100" max="1000" value="0" step="1"></label><label>Капитализация <select id="scan-cap"><option value="all">Любая</option><option value="large">От $500 млн</option><option value="small">До $500 млн</option><option value="unknown">Нет данных</option></select></label><label>Фандинг шорта <select id="scan-fund"><option value="all">Любой</option><option value="receive">Шорт получает</option><option value="pay">Шорт платит</option></select></label><button id="scan-refresh">Обновить</button></div><p id="scan-status" class="muted" role="status"></p><div id="scan-results"></div><button id="scan-more" hidden>Показать ещё</button></section><section class="panel" id="scan-detail" hidden></section><p class="muted">Контракты, фандинг и свечи — Bitget USDT Perpetual. Капитализация и исторический максимум спотовой монеты — CoinPaprika. Фандинг может измениться до расчёта.</p>';
+}
+let scanLimit=30;
+function showScanner(){
+ const results=main.querySelector("#scan-results");
+ if(!results)return;
+ const q=main.querySelector("#scan-search").value.trim().toUpperCase();
+ const rise=main.querySelector("#scan-rise").valueAsNumber;
+ const cap=main.querySelector("#scan-cap").value;
+ const fund=main.querySelector("#scan-fund").value;
+ const rows=scanState.markets.filter(m=>{
+  const c=scanState.caps.get(m.base)?.cap;
+  return m.symbol.includes(q)&&(!Number.isFinite(rise)||m.change>=rise)&&(cap==="all"||(cap==="unknown"?!Number.isFinite(c):Number.isFinite(c)&&(cap==="large"?c>=5e8:c<5e8)))&&(fund==="all"||(fund==="receive"?m.fund>0:m.fund<0));
+ }).sort((a,b)=>b.change-a.change);
+ const stamp=scanState.updated?new Date(scanState.updated).toLocaleTimeString("ru-RU"):"";
+ main.querySelector("#scan-status").textContent=scanState.loading?"Загружаем контракты и капитализацию…":scanState.error?"Bitget временно недоступен. "+(stamp?"Показаны данные от "+stamp+".":"Попробуйте обновить."):scanState.updated?"Под фильтры подходят "+rows.length+" из "+scanState.markets.length+" контрактов · "+stamp+(scanState.capError?" · капитализация недоступна":""):"";
+ results.innerHTML=rows.length?'<div class="wrap"><table><thead><tr><th>Контракт</th><th>Цена</th><th>24 ч</th><th>Капитализация</th><th>Фандинг</th><th>Оборот 24 ч</th></tr></thead><tbody>'+rows.slice(0,scanLimit).map(m=>{
+  const c=scanState.caps.get(m.base)?.cap;
+  return '<tr><td><button data-scan-symbol="'+m.symbol+'">'+m.symbol+'</button></td><td>'+priceText(m.last)+'</td><td>'+percent(m.change)+'</td><td>'+usd(c)+'</td><td>'+percent(m.fund)+(m.fund>0?' · получаете':m.fund<0?' · платите':'')+'</td><td>'+compact.format(m.turnover)+' USDT</td></tr>';
+ }).join("")+'</tbody></table></div>':scanState.updated?'<p class="empty">Нет контрактов с такими фильтрами.</p>':"";
+ main.querySelector("#scan-more").hidden=rows.length<=scanLimit;
+ renderScanDetail();
+}
+async function loadScanner(force=false){
+ if(scanState.loading||!force&&Date.now()-scanState.updated<60000)return;
+ scanState.loading=true;showScanner();
+ const [markets,caps]=await Promise.allSettled([
+  bitget("/api/v2/mix/market/tickers",futures),
+  publicJson("https://api.coinpaprika.com/v1/tickers")
+ ]);
+ if(markets.status==="fulfilled"){
+  scanState.markets=markets.value.filter(m=>/^[A-Z0-9]+USDT$/.test(m.symbol)&&number(m.lastPr)>0&&Number.isFinite(number(m.change24h))&&Number.isFinite(number(m.fundingRate))&&number(m.usdtVolume)>0).map(m=>({
+   symbol:m.symbol,base:m.symbol.slice(0,-4),last:number(m.lastPr),change:number(m.change24h)*100,fund:number(m.fundingRate)*100,turnover:number(m.usdtVolume)
+  }));
+  scanState.updated=Date.now();scanState.error="";
+ }else scanState.error="Bitget";
+ scanState.capError=caps.status!=="fulfilled"||!Array.isArray(caps.value);
+ if(!scanState.capError){
+  const seen=new Map();
+  for(const coin of caps.value){
+   if(!coin.symbol||!coin.quotes?.USD)continue;
+   const symbol=coin.symbol.toUpperCase(), quote=coin.quotes.USD;
+   if(seen.has(symbol)){seen.set(symbol,null);continue}
+   seen.set(symbol,{cap:quote.market_cap>0?number(quote.market_cap):NaN,ath:quote.ath_price>0?number(quote.ath_price):NaN,athDate:quote.ath_date});
+  }
+  scanState.caps=new Map([...seen].filter(([,value])=>value));
+ }
+ scanState.loading=false;showScanner();
+}
+async function candlesFor(symbol,interval,limit){
+ const data=await bitget("/api/v3/market/candles",{category:"USDT-FUTURES",symbol,interval,limit});
+ const width=interval==="1D"?24*hour:hour;
+ return data.map(row=>row.slice(0,5).map(Number)).filter(r=>r.length===5&&r.every(Number.isFinite)&&r[1]>0&&r[4]>0&&r[0]+width<=Date.now()).sort((a,b)=>a[0]-b[0]);
+}
+function replay(rows,threshold){
+ const returns=[];
+ for(let i=24;i+24<rows.length;i++){
+  if(rows[i][0]-rows[i-24][0]!==24*hour||rows[i+24][0]-rows[i][0]!==24*hour||rows[i+1][0]-rows[i][0]!==hour)continue;
+  if((rows[i][4]/rows[i-24][4]-1)*100<threshold)continue;
+  returns.push((1-rows[i+24][4]/rows[i+1][1])*100);
+  i+=24;
+ }
+ return returns;
+}
+async function selectContract(symbol){
+ const market=scanState.markets.find(item=>item.symbol===symbol);
+ if(!market)return;
+ scanState.selected=symbol;
+ const state={market,loading:true};
+ scanState.details=state;
+ renderScanDetail();
+ main.querySelector("#scan-detail")?.scrollIntoView({block:"nearest"});
+ const [daily,hourly,funding]=await Promise.allSettled([
+  candlesFor(symbol,"1D",90),candlesFor(symbol,"1H",1000),
+  bitget("/api/v2/mix/market/current-fund-rate",{...futures,symbol})
+ ]);
+ state.daily=daily.value||[];
+ state.hourly=hourly.value||[];
+ state.funding=funding.value?.[0];
+ state.loading=false;
+ if(scanState.details===state)renderScanDetail();
+}
+function renderScanDetail(){
+ const panel=main.querySelector("#scan-detail");
+ const detail=scanState.details;
+ if(!panel||!detail)return;
+ panel.hidden=false;
+ const {market,daily=[],hourly=[],funding}=detail;
+ const cap=scanState.caps.get(market.base);
+ const now=scanState.markets.find(m=>m.symbol===market.symbol)||market;
+ const hi=daily.length?Math.max(...daily.map(row=>row[2])):NaN;
+ const lo=daily.length?Math.min(...daily.map(row=>row[3])):NaN;
+ const last=hourly.at(-1);
+ const change=hours=>{const previous=hourly.at(-hours-1);return last&&previous&&last[0]-previous[0]===hours*hour?(last[4]/previous[4]-1)*100:NaN};
+ const interval=number(funding?.fundingRateInterval);
+ const next=number(funding?.nextUpdate);
+ const rate=number(funding?.fundingRate)*100;
+ const effective=Number.isFinite(rate)?rate:now.fund;
+ panel.innerHTML='<h2>'+market.symbol+' · разбор контракта</h2>'+(detail.loading?'<p role="status">Загружаем историю и фандинг…</p>':'<div class="metrics"><div class="metric"><small>Диапазон за '+daily.length+' закрытых дней</small><strong>'+priceText(lo)+' — '+priceText(hi)+'</strong></div><div class="metric"><small>Капитализация · максимум за всё время</small><strong>'+usd(cap?.cap)+' · '+(Number.isFinite(cap?.ath)?"$"+tickerPrice.format(cap.ath):"—")+'</strong></div><div class="metric"><small>Фандинг за расчётный интервал</small><strong>'+percent(effective)+(interval>0?' / '+interval+' ч':'')+'</strong></div></div><p>Рост по закрытым свечам · 1 ч <b>'+percent(change(1))+'</b> · 4 ч <b>'+percent(change(4))+'</b> · 24 ч <b>'+percent(change(24))+'</b> · 7 д <b>'+percent(change(168))+'</b></p><p>От максимума контракта за указанный период: <b>'+percent(now.last>0&&hi>0?(now.last/hi-1)*100:NaN)+'</b>. '+(effective>0?'Шорт получает фандинг.':effective<0?'Шорт платит фандинг.':'Нулевая ставка.')+(next>Date.now()?' Ближайший расчёт: '+safe(new Date(next).toLocaleString("ru-RU"))+'.':'')+'</p><h3>Проверка импульса на истории</h3><p class="muted">Тестовая гипотеза: рост закрытия за 24 часа ≥ порога, вход в условный шорт на открытии следующей часовой свечи, выход через 24 часа по закрытию. Сделки не пересекаются. Результат до комиссий и фандинга, историческая капитализация и пики не входят в правило.</p><label>Порог роста, % <input id="replay-threshold" type="number" min="0.1" max="1000" value="10" step="0.1"></label> <button id="replay-run">Проверить</button><p id="replay-output" role="status"></p>');
+ if(!detail.loading)runReplay();
+}
+function runReplay(){
+ const output=main.querySelector("#replay-output");
+ const threshold=main.querySelector("#replay-threshold")?.valueAsNumber;
+ if(!output)return;
+ const rows=scanState.details.hourly;
+ if(rows.length<49){output.textContent="Недостаточно часовой истории для проверки.";return}
+ if(!(threshold>=.1&&threshold<=1000)){output.textContent="Введите порог от 0,1 до 1000 %.";return}
+ const trades=replay(rows,threshold);
+ const days=(rows.at(-1)[0]-rows[0][0])/(24*hour);
+ const wins=trades.filter(result=>result>0).length;
+ output.textContent="История: "+Math.round(days)+" дн. · Сделки: "+trades.length+(trades.length?" · Прибыльных: "+wins+" · Средний результат: "+percent(trades.reduce((sum,n)=>sum+n,0)/trades.length):" · За этот период входов по условию не было.");
+}
+main.addEventListener("click",event=>{
+ const button=event.target.closest("button");
+ if(!button)return;
+ if(button.dataset.scanSymbol)selectContract(button.dataset.scanSymbol);
+ if(button.id==="scan-refresh")loadScanner(true);
+ if(button.id==="scan-more"){scanLimit+=30;showScanner()}
+ if(button.id==="replay-run")runReplay();
+});
+main.addEventListener("input",event=>{
+ if(!["scan-search","scan-rise","scan-cap","scan-fund"].includes(event.target.id))return;
+ scanLimit=30;showScanner();
+});
+
 let socket, retry, lastUpdate=0, frame=0;
 function setStatus(label){document.querySelector("#feed").textContent=label}
 function drawQuotes(){
@@ -210,3 +361,4 @@ route();
 connect();
 setInterval(()=>{if(!document.hidden&&!paused)loadHistory()},60000);
 </script></body></html>
+
