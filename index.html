@@ -13,7 +13,14 @@ const coins=[
 {symbol:"ADA",name:"Cardano",icon:"◆"},
 {symbol:"XRP",name:"XRP",icon:"×"},
 {symbol:"AVAX",name:"Avalanche",icon:"▲"},
-{symbol:"LINK",name:"Chainlink",icon:"⬡"}
+{symbol:"LINK",name:"Chainlink",icon:"⬡"},
+{symbol:"BNB",name:"BNB",icon:"◇"},
+{symbol:"DOGE",name:"Dogecoin",icon:"Ð"},
+{symbol:"TRX",name:"TRON",icon:"△"},
+{symbol:"LTC",name:"Litecoin",icon:"Ł"},
+{symbol:"BCH",name:"Bitcoin Cash",icon:"₿"},
+{symbol:"DOT",name:"Polkadot",icon:"●"},
+{symbol:"XLM",name:"Stellar",icon:"✦"}
 ];
 const main=document.querySelector("#main");
 const storageKey="vector-demo-watch-v1";
@@ -66,8 +73,8 @@ async function loadHistory(){
  if(active?.dataset.coin===coin.symbol&&range===selected)active.innerHTML=graph(coin);
 }
 function chart(coin){return '<section class="panel"><div class="chart-head"><div><div class="tag">'+coin.symbol+' / USD</div><div class="price" data-price="'+coin.symbol+'">'+price(coin)+'</div><span data-change="'+coin.symbol+'">'+trend(coin)+'</span></div><div class="group" aria-label="Период графика">'+["24Ч","7Д","30Д","90Д"].map(r=>'<button data-range="'+r+'" aria-pressed="'+(range===r)+'">'+r+'</button>').join("")+'</div></div><div id="plot" data-coin="'+coin.symbol+'">'+graph(coin)+'</div></section>'}
-function side(){return '<section class="panel"><h2>Активы</h2>'+coins.slice(0,5).map(coin=>'<a class="quote" href="#asset/'+coin.symbol+'"><span>'+coin.symbol+' <small>'+coin.name+'</small></span><span data-change="'+coin.symbol+'">'+trend(coin)+'</span></a>').join("")+'<a class="button" href="#market">Весь рынок →</a></section>'}
-function overview(){return intro("01 / ОБЗОР","Рынок в движении","Котировки USD и история торгов на спотовом рынке Kraken.")+'<div class="metrics"><div class="metric"><small>Активы на экране</small><strong>07</strong></div><div class="metric"><small>Объём за 24 ч</small><strong id="market-volume">—</strong></div><div class="metric"><small>Растут / падают</small><strong id="market-trend">—</strong></div></div><div class="layout">'+chart(coins[0])+side()+'</div><div class="actions"><button id="pause" aria-pressed="'+paused+'">'+(paused?"Возобновить котировки":"Пауза котировок")+'</button><a class="button" href="#converter">Рассчитать сумму →</a></div>'}
+function side(){return '<section class="panel"><h2>Активы</h2>'+["BTC","ETH","BNB","SOL","ADA"].map(symbol=>coins.find(coin=>coin.symbol===symbol)).map(coin=>'<a class="quote" href="#asset/'+coin.symbol+'"><span>'+coin.symbol+' <small>'+coin.name+'</small></span><span data-change="'+coin.symbol+'">'+trend(coin)+'</span></a>').join("")+'<a class="button" href="#market">Весь рынок →</a></section>'}
+function overview(){return intro("01 / ОБЗОР","Рынок в движении","Котировки USD и история торгов на спотовом рынке Kraken.")+'<div class="metrics"><div class="metric"><small>Активы на экране</small><strong>'+coins.length+'</strong></div><div class="metric"><small>Объём за 24 ч</small><strong id="market-volume">—</strong></div><div class="metric"><small>Растут / падают</small><strong id="market-trend">—</strong></div></div><div class="layout">'+chart(coins[0])+side()+'</div><div class="actions"><button id="pause" aria-pressed="'+paused+'">'+(paused?"Возобновить котировки":"Пауза котировок")+'</button><a class="button" href="#converter">Рассчитать сумму →</a></div>'}
 function marketList(){return coins.filter(c=>(c.symbol+" "+c.name).toLowerCase().includes(query.trim().toLowerCase())&&(filter==="all"||(filter==="up"?c.change>0:c.change<0))).sort((a,b)=>(b[sort]??-Infinity)-(a[sort]??-Infinity))}
 function market(){return intro("02 / РЫНОК","Список активов","Найдите монету, отсортируйте список или откройте её график.")+'<section class="panel"><div class="bar"><input id="search" type="search" placeholder="BTC или Bitcoin" aria-label="Поиск актива"><div class="group" aria-label="Фильтр">'+[["all","Все"],["up","Растут"],["down","Падают"]].map(([key,label])=>'<button data-filter="'+key+'" aria-pressed="'+(key===filter)+'">'+label+'</button>').join("")+'</div><label>Сортировка <select id="sort"><option value="volume">Объём</option><option value="price">Цена</option><option value="change">Изменение</option></select></label></div><div id="results">'+table(marketList())+'</div></section>'}
 function favorites(){return intro("03 / ИЗБРАННОЕ","Список наблюдения","Звёздочка добавляет актив в список. Список сохраняется в этом браузере.")+'<section class="panel">'+table(coins.filter(c=>watch.has(c.symbol)))+'<p><a class="button" href="#market">Добавить активы →</a></p></section>'}
